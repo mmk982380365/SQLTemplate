@@ -54,6 +54,7 @@
     
     //创建表格
     SQLTemplate *createTable = [[SQLTemplate alloc] initWithTableName:@"table" withMode:SQLTemplateModeCreateTable];
+    createTable.addIfNotExists = YES;
     [createTable addColumn:@"column1" type:@"integer" option:@"PRIMARY"];
     [createTable addColumn:@"column2" type:@"varchar(256)"];
     NSLog(@"%@",createTable.finalSqlString);
