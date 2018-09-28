@@ -61,3 +61,21 @@
     [createTable addColumn:@"column2" type:@"varchar(256)"];
     NSLog(@"%@",createTable.finalSqlString);
 ```
+
+## 函数式编程
+
+每个方法都添加了相应的函数式方法，例如：
+
+```
+	SQLTemplate *selectF = [[SQLTemplate alloc] initWithTableName:@"table" withMode:SQLTemplateModeSelect];
+    selectF.setSelect(@[@"column1",@"column2"])
+    .addWhere(@"column1='value1'", SQLTemplateRelationAnd)
+    .addWhere(@"column2='value2'", SQLTemplateRelationAnd)
+    .addOrder(@"column3")
+    .addOrderWithSortType(@"column4", SQLTemplateOrderDesc)
+    .addGroup(@"column5")
+    .setLimitAndOffset(10, 20);
+    NSLog(@"%@", selectF.SQL);
+```
+
+更多使用方法详见`SQLTemplate.h`文件
