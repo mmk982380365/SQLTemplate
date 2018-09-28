@@ -2,7 +2,7 @@
 
 一个便捷的生成SQL语句的帮助类，适用于SQLITE，并未测试其他数据库。
 
-最终生成的SQL语句为`finalSqlString`
+最终生成的SQL语句为`SQL`
 
 
 # Usage
