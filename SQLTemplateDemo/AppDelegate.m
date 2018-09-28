@@ -29,19 +29,39 @@
     [select addGroup:@"column5"];
     [select addGroup:@"column6"];
     [select setLimit:10 offset:20];
-    NSLog(@"%@",select.finalSqlString);
+    NSLog(@"%@",select.SQL);
+    
+    SQLTemplate *selectF = [[SQLTemplate alloc] initWithTableName:@"table" withMode:SQLTemplateModeSelect];
+    selectF.setSelect(@[@"column1",@"column2"])
+    .addWhere(@"column1='value1'", SQLTemplateRelationAnd)
+    .addWhere(@"column2='value2'", SQLTemplateRelationAnd)
+    .addOrder(@"column3")
+    .addOrderWithSortType(@"column4", SQLTemplateOrderDesc)
+    .addGroup(@"column5")
+    .setLimitAndOffset(10, 20);
+    NSLog(@"%@", selectF.SQL);
     
     //插入
     SQLTemplate *add = [[SQLTemplate alloc] initWithTableName:@"table" withMode:SQLTemplateModeAdd];
     [add addField:@"column1" value:@"value1"];
     [add addField:@"column2" value:@"value2"];
     [add addField:@"column3" value:@"value3"];
-    NSLog(@"%@",add.finalSqlString);
+    NSLog(@"%@",add.SQL);
+    
+    SQLTemplate *addF = [[SQLTemplate alloc] initWithTableName:@"table" withMode:SQLTemplateModeAdd];
+    addF.addFieldWithValue(@"column1", @"value1")
+    .addFieldWithValue(@"column2", @"value2")
+    .addFieldWithValue(@"column3", @"value3");
+    NSLog(@"%@",addF.SQL);
     
     //删除
     SQLTemplate *del = [[SQLTemplate alloc] initWithTableName:@"table" withMode:SQLTemplateModeDelete];
     [del addWhere:@"column1='value1'" relation:SQLTemplateRelationAnd];
-    NSLog(@"%@",del.finalSqlString);
+    NSLog(@"%@",del.SQL);
+    
+    SQLTemplate *delF = [[SQLTemplate alloc] initWithTableName:@"table" withMode:SQLTemplateModeDelete];
+    delF.addWhere(@"column1='value1'", SQLTemplateRelationAnd);
+    NSLog(@"%@",delF.SQL);
     
     //修改
     SQLTemplate *update = [[SQLTemplate alloc] initWithTableName:@"table" withMode:SQLTemplateModeUpdate];
@@ -50,14 +70,28 @@
     [update addField:@"column3" value:@"value3"];
     [update addWhere:@"column4='value4'" relation:SQLTemplateRelationAnd];
     [update addWhere:@"column5='value5'" relation:SQLTemplateRelationAnd];
-    NSLog(@"%@",update.finalSqlString);
+    NSLog(@"%@",update.SQL);
+    
+    SQLTemplate *updateF = [[SQLTemplate alloc] initWithTableName:@"table" withMode:SQLTemplateModeUpdate];
+    updateF.addFieldWithValue(@"column1", @"value1")
+    .addFieldWithValue(@"column2", @"value2")
+    .addFieldWithValue(@"column3", @"value3")
+    .addWhere(@"column4='value4'", SQLTemplateRelationAnd)
+    .addWhere(@"column5='value5'", SQLTemplateRelationAnd);
+    NSLog(@"%@",updateF.SQL);
     
     //创建表格
     SQLTemplate *createTable = [[SQLTemplate alloc] initWithTableName:@"table" withMode:SQLTemplateModeCreateTable];
-    createTable.addIfNotExists = YES;
+    [createTable setIfNotExist];
     [createTable addColumn:@"column1" type:@"integer" option:@"PRIMARY"];
     [createTable addColumn:@"column2" type:@"varchar(256)"];
-    NSLog(@"%@",createTable.finalSqlString);
+    NSLog(@"%@",createTable.SQL);
+    
+    SQLTemplate *createTableF = [[SQLTemplate alloc] initWithTableName:@"table" withMode:SQLTemplateModeCreateTable];
+    createTableF.addIfNotExist()
+    .addColumnWithOption(@"column1", @"integer", @"PRIMARY")
+    .addColumn(@"column2", @"varchar(256)");
+    NSLog(@"%@",createTableF.SQL);
     
     return YES;
 }

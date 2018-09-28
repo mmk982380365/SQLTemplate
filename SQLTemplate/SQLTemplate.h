@@ -86,7 +86,7 @@ typedef NS_ENUM(NSInteger, SQLTemplateOrder) {
 /**
  最终生成的SQL语句
  */
-@property (copy, nonatomic, readonly) NSString *finalSqlString;
+@property (copy, nonatomic, readonly) NSString *SQL;
 
 #pragma mark - common methods
 
@@ -97,6 +97,7 @@ typedef NS_ENUM(NSInteger, SQLTemplateOrder) {
  @param relation 与前一个条件的关系 是AND或OR 如果是第一个条件不受影响
  */
 - (void)addWhere:(NSString *)whereString relation:(SQLTemplateRelation)relation;
+- (SQLTemplate *(^)(NSString *whereString, SQLTemplateRelation relation))addWhere;
 
 #pragma mark - add methods
 
@@ -107,6 +108,7 @@ typedef NS_ENUM(NSInteger, SQLTemplateOrder) {
  @param value 对应值名
  */
 - (void)addField:(NSString *)field value:(id)value;
+- (SQLTemplate *(^)(NSString *field, id value))addFieldWithValue;
 
 #pragma mark - select methods
 
@@ -116,6 +118,7 @@ typedef NS_ENUM(NSInteger, SQLTemplateOrder) {
  @param select 需要展示的列名
  */
 - (void)setSelect:(NSArray<NSString *> *)select;
+- (SQLTemplate *(^)(NSArray<NSString *> *select))setSelect;
 
 /**
  添加order 默认生序
@@ -123,6 +126,7 @@ typedef NS_ENUM(NSInteger, SQLTemplateOrder) {
  @param order order语句
  */
 - (void)addOrder:(NSString *)order;
+- (SQLTemplate *(^)(NSString *order))addOrder;
 
 /**
  添加order
@@ -131,6 +135,7 @@ typedef NS_ENUM(NSInteger, SQLTemplateOrder) {
  @param sortType 排序规则
  */
 - (void)addOrder:(NSString *)order sort:(SQLTemplateOrder)sortType;
+- (SQLTemplate *(^)(NSString *order, SQLTemplateOrder sortType))addOrderWithSortType;
 
 /**
  添加分组
@@ -138,6 +143,7 @@ typedef NS_ENUM(NSInteger, SQLTemplateOrder) {
  @param group 分组的列名
  */
 - (void)addGroup:(NSString *)group;
+- (SQLTemplate *(^)(NSString *group))addGroup;
 
 /**
  设置分页
@@ -145,6 +151,7 @@ typedef NS_ENUM(NSInteger, SQLTemplateOrder) {
  @param limit 每页展示数量
  */
 - (void)setLimit:(int)limit;
+- (SQLTemplate *(^)(int limit))setLimit;
 
 /**
  设置分页
@@ -153,13 +160,16 @@ typedef NS_ENUM(NSInteger, SQLTemplateOrder) {
  @param offset 偏移量
  */
 - (void)setLimit:(int)limit offset:(int)offset;
+- (SQLTemplate *(^)(int limit, int offset))setLimitAndOffset;
 
 #pragma mark - create table methods
 
 /**
  是否添加 IF NOT EXISTS
  */
-@property (assign, nonatomic) BOOL addIfNotExists;
+
+- (void)setIfNotExist;
+- (SQLTemplate *(^)(void))addIfNotExist;
 
 /**
  添加列
@@ -168,6 +178,7 @@ typedef NS_ENUM(NSInteger, SQLTemplateOrder) {
  @param type 列的变量类型
  */
 - (void)addColumn:(NSString *)title type:(NSString *)type;
+- (SQLTemplate *(^)(NSString *title, NSString *type))addColumn;
 
 /**
  添加列
@@ -177,6 +188,7 @@ typedef NS_ENUM(NSInteger, SQLTemplateOrder) {
  @param option 列的属性
  */
 - (void)addColumn:(NSString *)title type:(NSString *)type option:(NSString *)option;
+- (SQLTemplate *(^)(NSString *title, NSString *type, NSString *option))addColumnWithOption;
 
 @end
 
